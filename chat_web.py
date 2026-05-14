@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 
 # ---------- 页面配置 ----------
-st.set_page_config(page_title="DeepSeek 聊天助手", page_icon="🤖", layout="centered")
+st.set_page_config(page_title="DeepSeek 聊天助手", page_icon="🤓", layout="centered")
 
 # ---------- 自定义 CSS ----------
 st.markdown("""
@@ -45,14 +45,14 @@ if isinstance(room, list):
     room = room[0]
 
 with st.sidebar:
-    st.title("🤖 控制台")
+    st.title("🤓 控制台")
     new_room = st.text_input("聊天室名称", value=room, help="相同房间名的设备将共享聊天记录")
     if new_room != room:
         st.query_params["room"] = new_room
         room = new_room
         st.rerun()
 
-    if st.button("✨ 新对话", use_container_width=True):
+    if st.button("🤩 新对话", use_container_width=True):
         # 删除当前房间的数据库记录
         supabase.table("chats").delete().eq("session_id", room).execute()
         st.session_state.messages = []
@@ -97,7 +97,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = load_messages()
 
 # ---------- 主界面 ----------
-st.title("🤖 DeepSeek 聊天助手")
+st.title("🤓 DeepSeek 聊天助手")
 st.caption("思考模式 · 流式输出 · 跨设备同步 · 永久保存")
 
 # 显示历史消息
@@ -107,7 +107,7 @@ for msg in st.session_state.messages:
     else:
         st.markdown(f'<div class="chat-row-ai"><div class="chat-bubble-ai">{msg["content"]}</div></div>', unsafe_allow_html=True)
         if "reasoning" in msg and msg["reasoning"]:
-            with st.expander("🧠 查看思考过程"):
+            with st.expander("🤯 查看思考过程"):
                 st.markdown(f'<div class="thinking-expander">{msg["reasoning"]}</div>', unsafe_allow_html=True)
 
 # 用户输入
@@ -135,7 +135,7 @@ if prompt := st.chat_input("在这里输入你的问题..."):
                 if hasattr(delta, 'reasoning_content') and delta.reasoning_content:
                     reasoning_text += delta.reasoning_content
                     with reasoning_placeholder.container():
-                        with st.expander("🧠 思考中...", expanded=True):
+                        with st.expander("🤯 思考中...", expanded=True):
                             st.markdown(reasoning_text)
                 if delta.content:
                     full_content += delta.content
